@@ -7,7 +7,7 @@ uint8_t* InLoadOrderModuleListAddress = 0;
 /**
  * @brief 初始化 PEB、Ldr、 InLoadOrderModuleList 地址
  */
-void InitInfo() {
+void PLIInit() {
 	PEBAddress = (uint8_t*)__readgsqword(0x60);
 	LdrAddress = *(uint8_t**)(PEBAddress + 0x18);
 	InLoadOrderModuleListAddress = *(uint8_t**)(LdrAddress + 0x10);
@@ -36,6 +36,7 @@ uint8_t* GetDLLBaseAddrByName(const char* dllname) {
 		}
 		ModuleAddress = GetNextModule(ModuleAddress);
 	} while (ModuleAddress != InLoadOrderModuleListAddress);
+
 	return 0;
 }
 
@@ -55,6 +56,7 @@ uint8_t* GetDLLBaseAddrByHash(uint64_t hash) {
 		}
 		ModuleAddress = GetNextModule(ModuleAddress);
 	} while (ModuleAddress != InLoadOrderModuleListAddress);
+
 	return 0;
 }
 
@@ -127,4 +129,27 @@ uint8_t* GetFuncAddrByHash(uint8_t* dll, uint64_t hash) {
 	}
 
 	return 0;
+}
+
+
+/**
+ * @brief 根据导出函数的序号从动态链接库中获取函数地址
+ *
+ * @param[in]  dll  动态链接库地址
+ * @param[in]  ordinal  导出函数的序号（从 1 开始）
+ *
+ * @return uint8_t*  成功返回函数地址，失败返回 0
+ */
+uint8_t* GetFuncAddrByOrdinal(uint8_t* dll, uint64_t ordinal) {
+	uint8_t* NTHeaderAddress = *(uint32_t*)(dll + 0x3C) + dll;
+	uint8_t* EATAddress = *(uint32_t*)(NTHeaderAddress + 0x88) + dll;
+
+	uint32_t NumberOfFunctions = *(uint32_t*)(EATAddress + 0x14);
+	if (ordinal == 0 || ordinal > NumberOfFunctions) {
+		return 0;
+	}
+
+	uint32_t* AddressOfFunctions = (uint32_t*)(*(uint32_t*)(EATAddress + 0x1C) + dll);
+
+	return (uint8_t*)(AddressOfFunctions[ordinal-1] + dll);
 }

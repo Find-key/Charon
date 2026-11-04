@@ -142,13 +142,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Core\NativeUtils.c" />
-    <ClCompile Include="src\Core\PEBWalk.c" />
+    <ClCompile Include="src\core\NativeUtils.c" />
+    <ClCompile Include="src\core\PEBWalk.c" />
     <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\syscalls\Syscalls.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Common.h" />
     <ClInclude Include="include\PEBWalk.h" />
+    <ClInclude Include="include\Syscalls.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="src\syscalls\SyscallsAsm.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

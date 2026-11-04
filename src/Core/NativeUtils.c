@@ -1,4 +1,4 @@
-#include "PEBWalk.h"
+#include "Common.h"
 
 bool CmpStrsIgnCase(const char* str1, const char* str2) {
 	uint32_t i = 0;
