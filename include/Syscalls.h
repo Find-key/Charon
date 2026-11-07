@@ -6,4 +6,4 @@ uint8_t* SyscallAddress;
 uint8_t* NtAddress;
 
 void SysInit();
-uint16_t GetSSN(uint8_t* funcaddr);
+uint16_t GetSSN(uint8_t* funcaddr, uint16_t* ssn);

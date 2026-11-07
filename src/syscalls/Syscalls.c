@@ -20,13 +20,34 @@ void SysInit() {
 
 
 /**
- * @brief 获取系统调用函数中的系统调用号（SSN）
+ * @brief 通过字节匹配解析系统调用函数中的系统调用号（SSN）
  *
  * @param[in]  funcaddr  系统调用函数函数地址
+ * @param[out]  ssn  储存解析结果的指针
  *
- * @return uint16_t  成功返回 SNN，失败返回 0
+ * @return bool  成功返回 1，失败返回 0
  */
-uint16_t GetSSN(uint8_t* funcaddr) {
+bool GetSSN(uint8_t* funcaddr, uint16_t* ssn) {
+	
+	if (!MatchSSN(funcaddr, ssn)) {
+		if (!CalculateSSN(funcaddr, ssn)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+
+/**
+ * @brief 通过字节匹配解析系统调用函数中的系统调用号（SSN）
+ *
+ * @param[in]  funcaddr  系统调用函数函数地址
+ * @param[out]  ssn  储存解析结果的指针
+ *
+ * @return bool  成功返回 1，失败返回 0
+ */
+bool MatchSSN(uint8_t* funcaddr, uint16_t* ssn) {
 	for (uint32_t i = 0; i < 32-7 && funcaddr[i] != 0xc3; i++) {
 
 		//    MOV R10, RCX
@@ -39,9 +60,39 @@ uint16_t GetSSN(uint8_t* funcaddr) {
 			&& funcaddr[i+7] == 0x00) {
 			uint16_t high = funcaddr[i+5];
 			uint16_t low = funcaddr[i+4];
-			return (high << 8) | low;
+			*ssn = (high << 8) | low;
+			return true;
 		}
 	}
 
-	return 0;
+	return false;
+}
+
+
+
+/**
+ * @brief 通过寻找未被 hook 的系统调用函数间接获得系统调用号（SSN）
+ *
+ * @param[in]  funcaddr  系统调用函数函数地址
+ * @param[out]  ssn  储存解析结果的指针
+ *
+ * @return bool  成功返回 1，失败返回 0
+ */
+bool CalculateSSN(uint8_t* funcaddr, uint16_t* ssn) {
+	uint16_t Result = 0;
+	for (uint8_t i = 0; i < 200; i++) {
+		uint8_t* Address = funcaddr - 32 * i;
+		if (MatchSSN(Address, &Result)) {
+			*ssn = Result + i;
+			return true;
+		}
+
+		Address = funcaddr + 32 * i;
+		if (MatchSSN(Address, &Result)) {
+			*ssn = Result - i;
+			return true;
+		}
+	}
+
+	return false;
 }
