@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <assert.h>
 
 #include "PEBWalk.h"
 #include "Syscalls.h"
@@ -20,6 +19,14 @@ void Test_PEBWalk() {
 
 int main() {
 	PLIInit();
+
+	uint8_t* pNt = GetDLLBaseAddrByName("ntdll.dll");
+	uint8_t* pNtReadFile = GetFuncAddrByName(pNt, "NtReadFile");
+	uint16_t result = -1;
+	if (GetSSN(pNtReadFile, &result)) {
+		printf("NtReadFile SSN: %hd\n", result);
+	}
+
 
 	system("pause");
 	return 0;

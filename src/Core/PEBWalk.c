@@ -11,6 +11,9 @@ void PLIInit() {
 	PEBAddress = (uint8_t*)__readgsqword(0x60);
 	LdrAddress = *(uint8_t**)(PEBAddress + 0x18);
 	InLoadOrderModuleListAddress = *(uint8_t**)(LdrAddress + 0x10);
+
+	pNtdll = GetDLLBaseAddrByName("ntdll.dll");
+	pKernel32 = GetDLLBaseAddrByName("kernel32.dll");
 }
 
 
@@ -140,7 +143,7 @@ uint8_t* GetFuncAddrByHash(uint8_t* dll, uint64_t hash) {
  *
  * @return uint8_t*  成功返回函数地址，失败返回 0
  */
-uint8_t* GetFuncAddrByOrdinal(uint8_t* dll, uint64_t ordinal) {
+uint8_t* GetFuncAddrByOrdinal(uint8_t* dll, uint32_t ordinal) {
 	uint8_t* NTHeaderAddress = *(uint32_t*)(dll + 0x3C) + dll;
 	uint8_t* EATAddress = *(uint32_t*)(NTHeaderAddress + 0x88) + dll;
 
