@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="include\Common.h" />
     <ClInclude Include="include\Memory.h" />
+    <ClInclude Include="include\NativeDefs.h" />
     <ClInclude Include="include\PEBWalk.h" />
     <ClInclude Include="include\SleepObf.h" />
     <ClInclude Include="include\Syscalls.h" />

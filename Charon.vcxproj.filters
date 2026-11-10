@@ -50,6 +50,9 @@
     <ClInclude Include="include\SleepObf.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\NativeDefs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="src\syscalls\SyscallsAsm.asm">
