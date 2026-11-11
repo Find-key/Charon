@@ -53,3 +53,14 @@ bool MemChg(uint8_t* addr, uint64_t size, uint32_t perm) {
 void MemCopy(uint8_t* taddr, uint8_t* oaddr, uint64_t size) {
     __movsb((unsigned char*)taddr, (const unsigned char*)oaddr, size);
 }
+
+
+/**
+ * @brief 释放申请的内存
+ *
+ * @param[in]  addr  内存地址
+ *
+ */
+void MemFree(uint8_t** addr, uint64_t* size) {
+    API.NtFreeVirtualMemory(-1, (void**)addr, (uint32_t*)size, 0x8000);
+}

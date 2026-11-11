@@ -14,6 +14,16 @@ void PLIInit() {
 
 	pNtdll = GetDLLBaseAddrByName("ntdll.dll");
 	pKernel32 = GetDLLBaseAddrByName("kernel32.dll");
+
+	ImageAddress = *(uint8_t**)(PEBAddress + 0x10);
+	uint8_t* NtHeader = *(uint32_t*)(ImageAddress + 0x3C) + ImageAddress;
+	ImageSize = *(uint32_t*)(NtHeader + 0x50);
+
+	uint8_t* SectionsTable = *(uint16_t*)(NtHeader + 4 + 0x10) + 4 + 20 + NtHeader;
+
+	// .text 若为第一项
+	TextAddress = *(uint32_t*)(SectionsTable + 0xC) + ImageAddress;
+	TextSize = *(uint32_t*)(SectionsTable + 0x10);
 }
 
 

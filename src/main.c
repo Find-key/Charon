@@ -3,7 +3,6 @@
 #include "PEBWalk.h"
 #include "Syscalls.h"
 
-
 void Init() {
 	PLIInit();
 	
@@ -15,6 +14,15 @@ void Init() {
 	API.NtAllocateVirtualMemory = (pfnNtAllocateVirtualMemory)GetFuncAddrByName(pNtdll, "NtAllocateVirtualMemory");
 	API.NtProtectVirtualMemory = (pfnNtProtectVirtualMemory)GetFuncAddrByName(pNtdll, "pfnNtProtectVirtualMemory");
 	API.NtSetEvent = (pfnNtSetEvent)GetFuncAddrByName(pNtdll, "NtSetEvent");
+	API.VirtualProtect = (pfnVirtualProtect)GetFuncAddrByName(pNtdll, "VirtualProtect");
+	API.Sleep = (pfnSleep)GetFuncAddrByName(pNtdll, "Sleep");
+	API.RtlCreateTimerQueue = (pfnRtlCreateTimerQueue)GetFuncAddrByName(pNtdll, "RtlCreateTimerQueue");
+	API.RtlCreateTimer = (pfnRtlCreateTimer)GetFuncAddrByName(pNtdll, "RtlCreateTimer");
+	API.NtContinue = (pfnNtContinue)GetFuncAddrByName(pNtdll, "NtContinue");
+	API.RtlDeleteTimerQueue = (pfnRtlDeleteTimerQueue)GetFuncAddrByName(pNtdll, "RtlDeleteTimerQueue");
+	API.NtClose = (pfnNtClose)GetFuncAddrByName(pNtdll, "NtClose");
+	API.NtFreeVirtualMemory = (pfnNtFreeVirtualMemory)GetFuncAddrByName(pNtdll, "NtFreeVirtualMemory");
+	API.NtSignalAndWaitForSingleObject = (pfnNtSignalAndWaitForSingleObject)GetFuncAddrByName(pNtdll, "NtSignalAndWaitForSingleObject");
 }
 
 
@@ -28,7 +36,6 @@ int main() {
 	if (GetSSN(pNtReadFile, &result)) {
 		printf("NtReadFile SSN: %hd\n", result);
 	}
-
 
 	system("pause");
 	return 0;
