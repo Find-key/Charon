@@ -140,6 +140,15 @@ typedef int (__stdcall* pfnNtContinue)(
     bool TestAlert
 );
 
+typedef void (__stdcall* pfnRtlExitUserThread)(
+    int ExitStatus
+);
+
+typedef int (__stdcall* pfnRtlDeleteTimerQueueEx)(
+    void* TimerQueue,
+    void* CompletionEvent
+);
+
 typedef struct {
     pfnNtCreateEvent NtCreateEvent;
     pfnNtSetEvent NtSetEvent;
@@ -161,7 +170,9 @@ typedef struct {
     pfnRtlCreateTimer RtlCreateTimer;
     pfnRtlCreateTimerQueue RtlCreateTimerQueue;
     pfnRtlDeleteTimerQueue RtlDeleteTimerQueue;
+    pfnRtlDeleteTimerQueueEx RtlDeleteTimerQueueEx;
     pfnRtlCaptureContext RtlCaptureContext;
+    pfnRtlExitUserThread RtlExitUserThread;
 } WIN_API;
 WIN_API API;
 uint8_t* ImageAddress;

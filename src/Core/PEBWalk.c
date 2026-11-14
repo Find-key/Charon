@@ -21,9 +21,9 @@ void PLIInit() {
 
 	uint8_t* SectionsTable = *(uint16_t*)(NtHeader + 4 + 0x10) + 4 + 20 + NtHeader;
 
-	// .text 若为第一项
-	TextAddress = *(uint32_t*)(SectionsTable + 0xC) + ImageAddress;
-	TextSize = *(uint32_t*)(SectionsTable + 0x10);
+	// to fix：此假设 .text 为 SectionsTable 第二项
+	TextAddress = *(uint32_t*)(SectionsTable + 0x34) + ImageAddress;
+	TextSize = *(uint32_t*)(SectionsTable + 0x30);
 }
 
 
