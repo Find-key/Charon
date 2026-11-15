@@ -20,6 +20,17 @@ typedef enum {
     SynchronizationEvent    /* 对应 Win32 的 Auto-Reset Event (自动重置) */
 } EVENT_TYPE;
 
+typedef struct {
+    uint16_t Length;
+    uint16_t MaximumLength;
+    char* Buffer;
+} USTRING;
+
+typedef struct {
+    uint16_t Length;
+    uint16_t MaximumLength;
+    uint16_t* Buffer;
+} UNICODE_STRING;
 
 void __movsb(unsigned char* Destination, const unsigned char* Source, unsigned __int64 Count);
 #pragma intrinsic(__movsb)
@@ -149,6 +160,20 @@ typedef int (__stdcall* pfnRtlDeleteTimerQueueEx)(
     void* CompletionEvent
 );
 
+typedef int (__stdcall* pfnLdrGetProcedureAddress)(
+    void*           DllHandle,
+    USTRING*        ProcedureName,
+    uint64_t        ProcedureNumber,
+    void**          ProcedureAddress
+);
+
+typedef int (__stdcall* pfnLdrLoadDll)(
+    uint16_t*            PathToFile,
+    uint64_t*           DllCharacteristics,
+    UNICODE_STRING*     DllName,
+    void** DllHandle
+);
+
 typedef struct {
     pfnNtCreateEvent NtCreateEvent;
     pfnNtSetEvent NtSetEvent;
@@ -162,6 +187,10 @@ typedef struct {
     pfnVirtualProtect VirtualProtect;
 
     pfnSleep Sleep;
+
+    pfnLdrLoadDll LdrLoadDll;
+    pfnLdrGetProcedureAddress LdrGetProcedureAddress;
+
 
     pfnCreateTimerQueue CreateTimerQueue;
     pfnCreateTimerQueueTimer CreateTimerQueueTimer;

@@ -124,4 +124,3 @@ struct CONTEXT {
     uint64_t LastExceptionToRip;
     uint64_t LastExceptionFromRip;
 };
-

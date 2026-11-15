@@ -26,6 +26,9 @@ void Init() {
 	API.NtFreeVirtualMemory = (pfnNtFreeVirtualMemory)GetFuncAddrByName(pNtdll, "NtFreeVirtualMemory");
 	API.NtSignalAndWaitForSingleObject = (pfnNtSignalAndWaitForSingleObject)GetFuncAddrByName(pNtdll, "NtSignalAndWaitForSingleObject");
 	API.RtlExitUserThread = (pfnRtlExitUserThread)GetFuncAddrByName(pNtdll, "RtlExitUserThread");
+	API.LdrLoadDll = (pfnLdrLoadDll)GetFuncAddrByName(pNtdll, "LdrLoadDll");
+	API.LdrGetProcedureAddress = (pfnLdrGetProcedureAddress)GetFuncAddrByName(pNtdll, "LdrGetProcedureAddress");
+
 }
 
 void show() {

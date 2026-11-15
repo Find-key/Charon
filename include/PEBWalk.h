@@ -3,6 +3,7 @@
 
 uint8_t* pNtdll;
 uint8_t* pKernel32;
+uint8_t* pAdvapi32;
 
 void PLIInit();
 uint8_t* GetDLLBaseAddrByName(const char* dllname);
