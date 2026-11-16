@@ -1,4 +1,5 @@
 #include "PEBWalk.h"
+#include "Globals.h"
 
 uint8_t* PEBAddress = 0;
 uint8_t* LdrAddress = 0;
@@ -12,9 +13,6 @@ void PLIInit() {
 	LdrAddress = *(uint8_t**)(PEBAddress + 0x18);
 	InLoadOrderModuleListAddress = *(uint8_t**)(LdrAddress + 0x10);
 
-	pNtdll = GetDLLBaseAddrByName("ntdll.dll");
-	pKernel32 = GetDLLBaseAddrByName("kernel32.dll");
-
 	ImageAddress = *(uint8_t**)(PEBAddress + 0x10);
 	uint8_t* NtHeader = *(uint32_t*)(ImageAddress + 0x3C) + ImageAddress;
 	ImageSize = *(uint32_t*)(NtHeader + 0x50);
@@ -24,11 +22,6 @@ void PLIInit() {
 	// to fix：此假设 .text 为 SectionsTable 第二项
 	TextAddress = *(uint32_t*)(SectionsTable + 0x34) + ImageAddress;
 	TextSize = *(uint32_t*)(SectionsTable + 0x30);
-}
-
-
-uint8_t* GetNextModule(uint8_t* ModuleAddress) {
-	return *(uint8_t**)(ModuleAddress);
 }
 
 
@@ -47,7 +40,7 @@ uint8_t* GetDLLBaseAddrByName(const char* dllname) {
 		if (CmpStrAndUniIgnCase(dllname, *(char**)(ModuleAddress + 0x60))) {
 			return *(uint8_t**)(ModuleAddress + 0x30);
 		}
-		ModuleAddress = GetNextModule(ModuleAddress);
+		ModuleAddress = *(uint8_t**)(ModuleAddress);
 	} while (ModuleAddress != InLoadOrderModuleListAddress);
 
 	return 0;
@@ -67,7 +60,7 @@ uint8_t* GetDLLBaseAddrByHash(uint64_t hash) {
 		if (hash == HashUni(*(char**)(ModuleAddress + 0x60))) {
 			return *(uint8_t**)(ModuleAddress + 0x30);
 		}
-		ModuleAddress = GetNextModule(ModuleAddress);
+		ModuleAddress = *(uint8_t**)(ModuleAddress);
 	} while (ModuleAddress != InLoadOrderModuleListAddress);
 
 	return 0;

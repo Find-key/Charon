@@ -3,9 +3,13 @@
 #include "PEBWalk.h"
 #include "Syscalls.h"
 #include "SleepObf.h"
+#include "Globals.h"
 
 void Init() {
 	PLIInit();
+
+	pNtdll = GetDLLBaseAddrByName("ntdll.dll");
+	pKernel32 = GetDLLBaseAddrByName("kernel32.dll");
 	
 	ResolveByName(CreateTimerQueue, pKernel32);
 	ResolveByName(CreateTimerQueueTimer, pKernel32);

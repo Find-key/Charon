@@ -1,15 +1,13 @@
 #include "Syscalls.h"
 #include "PEBWalk.h"
+#include "Globals.h"
 
 /**
  * @brief 初始化 Syscall 的地址
  */
 void SysInit() {
-	SyscallAddress = 0;
-	NtAddress = GetDLLBaseAddrByName("nt.dll");
-
 	for (uint32_t idx = 0; SyscallAddress != 0; idx++) {
-		uint8_t* FunctionAddress = GetFuncAddrByOrdinal(NtAddress, idx);
+		uint8_t* FunctionAddress = GetFuncAddrByOrdinal(pNtdll, idx);
 		for (uint32_t i = 0; FunctionAddress[i] != 0xc3; i++) {
 			if (*(uint16_t*)&FunctionAddress[i] == 0x50F) {
 				SyscallAddress = &FunctionAddress[i];

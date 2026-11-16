@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\Globals.c" />
     <ClCompile Include="src\core\NativeUtils.c" />
     <ClCompile Include="src\core\PEBWalk.c" />
     <ClCompile Include="src\evasion\SleepObf.c" />
@@ -156,7 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Common.h" />
+    <ClInclude Include="include\Globals.h" />
     <ClInclude Include="include\Memory.h" />
+    <ClInclude Include="include\NativeUtils.h" />
     <ClInclude Include="include\PEBWalk.h" />
     <ClInclude Include="include\SleepObf.h" />
     <ClInclude Include="include\Syscalls.h" />

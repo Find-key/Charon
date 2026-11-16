@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Common.h"
 
 uint8_t* MemAlloc(uint64_t size);

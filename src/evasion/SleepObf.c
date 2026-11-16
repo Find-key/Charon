@@ -1,6 +1,7 @@
 #include "SleepObf.h"
 #include "PEBWalk.h"
 #include "Memory.h"
+#include "Globals.h"
 
 char g_Key[16] = {
     0x55,0x55,0x55,0x55, 0x55,0x55,0x55,0x55,

@@ -1,5 +1,6 @@
 #include "Memory.h"
 #include "PEBWalk.h"
+#include "Globals.h"
 
 /**
  * @brief ÉêÇë¿É¶Á¿ÉĞ´ÄÚ´æ

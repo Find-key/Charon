@@ -1,4 +1,4 @@
-#include "Common.h"
+#include "NativeUtils.h"
 
 bool CmpStrsIgnCase(const char* str1, const char* str2) {
 	uint32_t i = 0;
