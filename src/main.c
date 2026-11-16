@@ -33,6 +33,8 @@ void Init() {
 	ResolveByName(RtlExitUserThread, pNtdll);
 	ResolveByName(LdrLoadDll, pNtdll);
 	ResolveByName(LdrGetProcedureAddress, pNtdll);
+
+	SysInit();
 }
 
 void show() {
