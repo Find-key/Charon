@@ -154,6 +154,7 @@
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\memory\Memory.c" />
     <ClCompile Include="src\syscalls\Syscalls.c" />
+    <ClCompile Include="src\Test.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Common.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="include\PEBWalk.h" />
     <ClInclude Include="include\SleepObf.h" />
     <ClInclude Include="include\Syscalls.h" />
+    <ClInclude Include="include\Test.h" />
     <ClInclude Include="include\Types.h" />
   </ItemGroup>
   <ItemGroup>

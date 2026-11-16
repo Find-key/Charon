@@ -1,9 +1,7 @@
-#include <stdio.h>
-
 #include "PEBWalk.h"
 #include "Syscalls.h"
-#include "SleepObf.h"
 #include "Globals.h"
+#include "Test.h"
 
 void Init() {
 	PLIInit();
@@ -37,22 +35,8 @@ void Init() {
 	SysInit();
 }
 
-void show() {
-	uint8_t* pNtReadFile = GetFuncAddrByName(pNtdll, "NtReadFile");
-	uint16_t result = -1;
-	if (GetSSN(pNtReadFile, &result)) {
-		printf("NtReadFile SSN: %hd\n", result);
-	}
-}
-
-
 int main() {
 	Init();
 
-	for (;;) {
-		show();
-		SleepObf(1000);
-	}
-
-	return 0;
+	return Test();
 }
