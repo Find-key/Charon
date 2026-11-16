@@ -50,7 +50,7 @@
     <ClInclude Include="include\SleepObf.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\NativeDefs.h">
+    <ClInclude Include="include\Types.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
