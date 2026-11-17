@@ -5,7 +5,7 @@
 #include "PEBWalk.h"
 #include "SleepObf.h"
 
-int Test(void) {
+int Test() {
     int failed = 0;
 
     printf("[1] ntdll base: 0x%p\n", (void*)pNtdll);

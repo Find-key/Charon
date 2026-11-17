@@ -1,3 +1,3 @@
 #pragma once
 
-int SelfTestRun();
+int Test();
