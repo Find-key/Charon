@@ -6,13 +6,17 @@
  * @brief 初始化 Syscall 的地址
  */
 void SysInit() {
-	for (uint32_t idx = 0; SyscallAddress != 0; idx++) {
-		uint8_t* FunctionAddress = GetFuncAddrByOrdinal(pNtdll, idx);
-		for (uint32_t i = 0; FunctionAddress[i] != 0xc3; i++) {
-			if (*(uint16_t*)&FunctionAddress[i] == 0x50F) {
-				SyscallAddress = &FunctionAddress[i];
-			}
+	// ZwCompactKeys 冷僻却有用，所以选择这个
+	uint8_t* FunctionAddress = GetFuncAddrByName(pNtdll, "ZwCompactKeys");
+	for (uint32_t i = 0; i < 10*0x20; i++) {
+		if (*(uint16_t*)&FunctionAddress[i] == 0x50F && FunctionAddress[i+2] == 0xc3) {
+			SyscallAddress = &FunctionAddress[i];
+			break;
 		}
+	}
+
+	if (SyscallAddress == 0) {
+		printf("Sycall Not Found");
 	}
 }
 
