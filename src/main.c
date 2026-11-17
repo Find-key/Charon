@@ -8,7 +8,7 @@ void Init() {
 
 	pNtdll = GetDLLBaseAddrByName("ntdll.dll");
 	pKernel32 = GetDLLBaseAddrByName("kernel32.dll");
-	
+
 	ResolveByName(CreateTimerQueue, pKernel32);
 	ResolveByName(CreateTimerQueueTimer, pKernel32);
 	ResolveByName(WaitForSingleObjectEx, pKernel32);

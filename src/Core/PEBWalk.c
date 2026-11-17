@@ -1,5 +1,6 @@
 #include "PEBWalk.h"
 #include "Globals.h"
+#include "NativeUtils.h"
 
 uint8_t* PEBAddress = 0;
 uint8_t* LdrAddress = 0;
@@ -13,15 +14,25 @@ void PLIInit() {
 	LdrAddress = *(uint8_t**)(PEBAddress + 0x18);
 	InLoadOrderModuleListAddress = *(uint8_t**)(LdrAddress + 0x10);
 
+
 	ImageAddress = *(uint8_t**)(PEBAddress + 0x10);
 	uint8_t* NtHeader = *(uint32_t*)(ImageAddress + 0x3C) + ImageAddress;
 	ImageSize = *(uint32_t*)(NtHeader + 0x50);
 
+
+	uint16_t NumberOfSections = *(uint16_t*)(NtHeader + 6);
 	uint8_t* SectionsTable = *(uint16_t*)(NtHeader + 4 + 0x10) + 4 + 20 + NtHeader;
 
-	// to fix：此假设 .text 为 SectionsTable 第二项
-	TextAddress = *(uint32_t*)(SectionsTable + 0x34) + ImageAddress;
-	TextSize = *(uint32_t*)(SectionsTable + 0x30);
+	for (int i = 0; i < NumberOfSections; i++) {
+		/*
+		 * 通过比对 SectionsTable 的每一项的 SectionName 字段来确定项
+		 */
+		if (CmpStrsIgnCase(".text", SectionsTable+i*0x28)) {
+			TextAddress = *(uint32_t*)(SectionsTable + 0x28*i + 0xC) + ImageAddress;
+			TextSize = *(uint32_t*)(SectionsTable + 0x28*i + 0x8);
+			break;
+		}
+	}
 }
 
 
