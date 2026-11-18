@@ -11,7 +11,6 @@
 uint8_t* MemAlloc(uint64_t size) {
     uint8_t* Address = 0;
     uint64_t MemSize = size;
-    
 
     if (API.NtAllocateVirtualMemory(-1, &Address, 0, &MemSize, 0x3000, 0x04) == 0) {
         return Address;
@@ -61,6 +60,11 @@ void MemCopy(uint8_t* taddr, uint8_t* oaddr, uint64_t size) {
  * @param[in]  addr  ÄÚ´æµØÖ·
  *
  */
-void MemFree(uint8_t** addr, uint64_t* size) {
-    API.NtFreeVirtualMemory(-1, (void**)addr, (uint32_t*)size, 0x8000);
+bool MemFree(uint8_t** addr) {
+    uint32_t Size = 0;
+    if (API.NtFreeVirtualMemory(-1, (void**)addr, &Size, 0x8000) >= 0 ) {
+        return true;
+    }
+
+    return false;
 }
