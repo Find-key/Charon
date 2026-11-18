@@ -1,5 +1,7 @@
 #pragma once
 
+#include <intrin.h> 
+
 typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
@@ -251,10 +253,10 @@ typedef int(__stdcall* pfnVirtualProtect)(
     );
 
 typedef int(__stdcall* pfnNtFreeVirtualMemory)(
-    void* ProcessHandle,
-    void** BaseAddress,
-    uint32_t* RegionSize,
-    uint32_t       FreeType
+    void*           ProcessHandle,
+    void**          BaseAddress,
+    uint64_t*       RegionSize,
+    uint32_t        FreeType
     );
 
 typedef void(__stdcall* pfnSleep)(

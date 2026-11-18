@@ -61,7 +61,7 @@ void MemCopy(uint8_t* taddr, uint8_t* oaddr, uint64_t size) {
  *
  */
 bool MemFree(uint8_t** addr) {
-    uint32_t Size = 0;
+    uint64_t Size = 0;
     if (API.NtFreeVirtualMemory(-1, (void**)addr, &Size, 0x8000) >= 0 ) {
         return true;
     }
