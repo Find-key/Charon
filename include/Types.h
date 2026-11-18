@@ -16,8 +16,8 @@ typedef enum {
 } EVENT_TYPE;
 
 typedef struct {
-    uint16_t Length;
-    uint16_t MaximumLength;
+    uint32_t Length;
+    uint32_t MaximumLength;
     char* Buffer;
 } USTRING;
 

