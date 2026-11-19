@@ -39,6 +39,9 @@
     <ClCompile Include="src\Test.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\evasion\Spoof.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\PEBWalk.h">
@@ -68,9 +71,15 @@
     <ClInclude Include="include\Test.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\StackSpoof.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="src\syscalls\SyscallsAsm.asm">
+      <Filter>源文件</Filter>
+    </MASM>
+    <MASM Include="src\evasion\StackSpoof.asm">
       <Filter>源文件</Filter>
     </MASM>
   </ItemGroup>

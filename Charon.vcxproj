@@ -151,6 +151,7 @@
     <ClCompile Include="src\core\NativeUtils.c" />
     <ClCompile Include="src\core\PEBWalk.c" />
     <ClCompile Include="src\evasion\SleepObf.c" />
+    <ClCompile Include="src\evasion\Spoof.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\memory\Memory.c" />
     <ClCompile Include="src\syscalls\Syscalls.c" />
@@ -163,11 +164,13 @@
     <ClInclude Include="include\NativeUtils.h" />
     <ClInclude Include="include\PEBWalk.h" />
     <ClInclude Include="include\SleepObf.h" />
+    <ClInclude Include="include\StackSpoof.h" />
     <ClInclude Include="include\Syscalls.h" />
     <ClInclude Include="include\Test.h" />
     <ClInclude Include="include\Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <MASM Include="src\evasion\StackSpoof.asm" />
     <MASM Include="src\syscalls\SyscallsAsm.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

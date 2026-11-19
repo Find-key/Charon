@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "PEBWalk.h"
 #include "SleepObf.h"
+#include "StackSpoof.h"
 
 int Test() {
     int failed = 0;
@@ -27,9 +28,10 @@ int Test() {
         failed = 1;
     }
 
-    for (uint32_t i = 0; i < 32; i++) {
+    for (uint32_t i = 0; i < 3; i++) {
         printf("Sleep loop %d\n", i + 1);
-        SleepObf(1000);
+        Parameter p = { 1, 30000 };
+        ShadowCall(SleepObf, &p);
     }
     
 

@@ -45,7 +45,7 @@ void SleepObf(uint32_t time) {
 
     if (!pSystemFunction032) {
         char name[] = "SystemFunction032";
-        USTRING u = { 18, 19, name };
+        ANSI_STRING u = { 18, 19, name };
 
         API.LdrGetProcedureAddress(pAdvapi32, &u, 0, &pSystemFunction032);
     }

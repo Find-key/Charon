@@ -20,8 +20,14 @@ typedef enum {
 typedef struct {
     uint32_t Length;
     uint32_t MaximumLength;
-    char* Buffer;
+    uint8_t* Buffer;
 } USTRING;
+
+typedef struct {
+    uint16_t Length;
+    uint16_t MaximumLength;
+    uint8_t* Buffer;
+} ANSI_STRING;
 
 typedef struct {
     uint16_t Length;
@@ -145,9 +151,6 @@ struct CONTEXT {
     uint64_t LastExceptionToRip;
     uint64_t LastExceptionFromRip;
 };
-
-void __movsb(unsigned char* Destination, const unsigned char* Source, unsigned __int64 Count);
-#pragma intrinsic(__movsb)
 
 typedef void(__stdcall* WAITORTIMERCALLBACK)(
     void* Parameter,
@@ -279,7 +282,7 @@ typedef int(__stdcall* pfnRtlDeleteTimerQueueEx)(
 
 typedef int(__stdcall* pfnLdrGetProcedureAddress)(
     void* DllHandle,
-    USTRING* ProcedureName,
+    ANSI_STRING* ProcedureName,
     uint64_t        ProcedureNumber,
     void** ProcedureAddress
     );
